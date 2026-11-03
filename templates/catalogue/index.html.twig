@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+
+<title>Hello CatalogueController!</title>
+<link rel="stylesheet" href="{{ asset('styles/app.css') }}">
+
+{% block body %}
+
+    <h1 class="text-3xl mb-15">Catalogue</h1>
+
+<div class="flex gap-4 ml-4">
+    {% for produit in produits %}
+
+        <div class="bg-fuchsia-300 rounded-lg mr-4 p-4">
+            <h1 class="text-xl">{{ produit.nom }} - {{ produit.stock }} restants</h1>
+            <p>{{ produit.prix }} euros</p>
+
+            <button type="button" class=" mt-10 cursor-pointer bg-lime-500 text-white rounded-lg p-2 hover:bg-lime-400">Ajouter au panier</button>
+        </div>
+
+    {% endfor %}
+</div>
+{% endblock %}

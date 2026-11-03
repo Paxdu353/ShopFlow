@@ -1,4 +1,6 @@
 <?php
+
+namespace App\Commande\Domain\Event;
 final class CommandePassee
     {
         public function __construct(

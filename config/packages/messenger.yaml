@@ -1,7 +1,7 @@
 framework:
     messenger:
         failure_transport: failed
-
+    
         transports:
             # https://symfony.com/doc/current/messenger.html#transport-configuration
             async:
@@ -21,6 +21,7 @@ framework:
             Symfony\Component\Mailer\Messenger\SendEmailMessage: async
             Symfony\Component\Notifier\Message\ChatMessage: async
             Symfony\Component\Notifier\Message\SmsMessage: async
+            # App\Commande\Domain\Event\CommandePassee: async
 
             # Route your messages to the transports
             # 'App\Message\YourMessage': async

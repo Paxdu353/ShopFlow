@@ -2,6 +2,7 @@
 
 namespace App\Catalogue;
 
+use App\Api\JsonShopStorage;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -9,15 +10,16 @@ use Symfony\Component\Routing\Attribute\Route;
 final class CatalogueController extends AbstractController
 {
     #[Route('/catalogue', name: 'app_catalogue')]
-    public function index(): Response
+    public function index(JsonShopStorage $storage): Response
     {
         return $this->render('catalogue/index.html.twig', [
             'controller_name' => 'CatalogueController',
-            'produits' => [
-                ['id' => 'premium', 'nom' => 'Kit robotique premium', 'prix' => 100, 'stock' => 10],
-                ['id' => 'standard', 'nom' => 'Kit robotique standard', 'prix' => 50, 'stock' => 20],
-                ['id' => 'mini', 'nom' => 'Kit robotique clochard', 'prix' => 15, 'stock' => 15],
-            ]
+            'produits' => array_map(static fn (array $product): array => [
+                'id' => $product['id'],
+                'nom' => $product['name'],
+                'prix' => $product['price'],
+                'stock' => $product['stock'],
+            ], $storage->products()),
         ]);
     }
 }

@@ -1,0 +1,5 @@
+[
+    {"id": 1, "name": "Kit robotique premium", "price": 100, "stock": 10},
+    {"id": 2, "name": "Kit robotique standard", "price": 50, "stock": 20},
+    {"id": 3, "name": "Kit robotique clochard", "price": 15, "stock": 15}
+]

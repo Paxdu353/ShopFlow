@@ -8,13 +8,13 @@ use Symfony\Component\Routing\Attribute\Route;
 
 final class ShopApiController
 {
-    #[Route('/produits', name: 'api_get_produits', methods: ['GET'])]
+    #[Route('/api/produits', name: 'api_get_produits', methods: ['GET'])]
     public function products(JsonShopStorage $storage): JsonResponse
     {
         return new JsonResponse($storage->products());
     }
 
-    #[Route('/produit/{produit_id}', name: 'api_get_produit', requirements: ['produit_id' => '\d+'], methods: ['GET'])]
+    #[Route('/api/produit/{produit_id}', name: 'api_get_produit', requirements: ['produit_id' => '\d+'], methods: ['GET'])]
     public function product(int $produit_id, JsonShopStorage $storage): JsonResponse
     {
         $product = $storage->product($produit_id);

@@ -8,6 +8,10 @@ RUN apt-get update \
         libpq-dev \
         libzip-dev \
         libonig-dev \
+        librabbitmq-dev \
+        libssl-dev \
+    && pecl install amqp \
+    && docker-php-ext-enable amqp \
     && docker-php-ext-install \
         intl \
         pdo_pgsql \
@@ -18,5 +22,9 @@ RUN apt-get update \
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
 WORKDIR /app
+
+COPY . .
+
+RUN composer install --no-interaction --prefer-dist --no-progress
 
 CMD ["php", "-S", "0.0.0.0:8000", "-t", "public", "bin/dev-router.php"]

@@ -14,7 +14,9 @@ docker compose up -d node
 docker compose logs -f node
 ```
 
-Ce service exécute `npm ci`, puis `npm run watch`. Il recompile automatiquement
+Ce service exécute `npm ci --include=dev`, puis `npm run watch`.
+Tailwind, PostCSS, Encore et les dépendances JavaScript sont installés dans Docker ;
+Node et npm ne sont pas nécessaires sur la machine hôte. Il recompile automatiquement
 les modifications dans `assets/` et les classes Tailwind des templates Twig.
 Le polling permet de détecter les changements sur les volumes Docker Desktop.
 Le dossier `public/` est exclu des sources Tailwind pour éviter les boucles de compilation.
@@ -30,10 +32,21 @@ Pour produire les assets optimisés (arrêter le watcher pour éviter les écrit
 
 ```bash
 docker compose stop node
-docker compose run --rm --no-deps node sh -c "npm ci --no-audit --no-fund && npm run build"
+docker compose run --rm --no-deps node sh -c "npm ci --include=dev --no-audit --no-fund && npm run build"
 docker compose up -d node
 ```
 
 Les styles personnalisés restent dans `assets/styles/app.css`, après l’import Tailwind.
 Le catalogue charge les entrées `app` avec les fonctions Twig `encore_entry_link_tags`
 et `encore_entry_script_tags`. Les fichiers compilés sont générés dans `public/build/`.
+
+Pour ajouter ou mettre à jour un paquet npm depuis Docker :
+
+```bash
+docker compose stop node
+docker compose run --rm --no-deps node npm install --save-dev nom-du-paquet
+docker compose up -d node
+```
+
+Cette commande met aussi à jour `package.json` et `package-lock.json` dans le projet.
+Arrêter le watcher avant l’installation évite de modifier `node_modules` pendant une compilation.

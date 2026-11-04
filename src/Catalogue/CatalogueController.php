@@ -14,9 +14,9 @@ final class CatalogueController extends AbstractController
         return $this->render('catalogue/index.html.twig', [
             'controller_name' => 'CatalogueController',
             'produits' => [
-                ['nom' => 'Kit robotique premium', 'prix' => 100, 'stock' => 10],
-                ['nom' => 'Kit robotique standard', 'prix' => 50, 'stock' => 20],
-                ['nom' => 'Kit robotique clochard', 'prix' => 15, 'stock' => 15],
+                ['id' => 'premium', 'nom' => 'Kit robotique premium', 'prix' => 100, 'stock' => 10],
+                ['id' => 'standard', 'nom' => 'Kit robotique standard', 'prix' => 50, 'stock' => 20],
+                ['id' => 'mini', 'nom' => 'Kit robotique clochard', 'prix' => 15, 'stock' => 15],
             ]
         ]);
     }

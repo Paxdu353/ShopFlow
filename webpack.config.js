@@ -77,4 +77,12 @@ Encore
     //.autoProvidejQuery()
 ;
 
-export default await Encore.getWebpackConfig();
+const config = await Encore.getWebpackConfig();
+// Stimulus Bridge's loader injects CommonJS require() calls into the entry.
+config.module.rules.push({
+    test: /\.js$/,
+    include: /[\\/]assets[\\/]/,
+    type: 'javascript/auto',
+});
+
+export default config;

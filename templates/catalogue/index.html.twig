@@ -13,12 +13,12 @@
     <div class="ambient ambient-two" aria-hidden="true"></div>
     <header class="relative z-10 mx-auto flex max-w-7xl items-center justify-between gap-4 px-5 py-7 md:px-10">
         <a href="{{ path('app_catalogue') }}" class="brand flex items-center gap-3" aria-label="ShopFlow, accueil du catalogue"><span class="brand-icon" aria-hidden="true">✳</span> SHOP<span class="text-lime-300">FLOW</span><span class="lab-tag hidden sm:inline">LAB / 001</span></a>
-        <a href="#catalogue" class="cart-toggle flex items-center gap-3 rounded-full px-5 py-3">Les kits <span aria-hidden="true">↘</span></a>
+        <div class="header-actions"><a href="#catalogue" class="kits-link">Les expériences ↙</a><button type="button" class="cart-toggle flex items-center gap-3 rounded-full px-5 py-3" data-cart-open aria-haspopup="dialog">Mon butin <span class="cart-count" data-cart-count>0</span><span aria-hidden="true">↗</span></button></div>
     </header>
 
     <main class="relative z-10 mx-auto max-w-7xl px-5 pb-16 md:px-10">
         <section class="hero relative py-12 md:py-20" aria-labelledby="hero-title">
-            <div class="hero-copy relative z-10">
+            <span class="lab-scribble hero-scribble" aria-hidden="true">ça va probablement bien se passer ↙</span><div class="hero-copy relative z-10">
                 <p class="eyebrow mb-6 flex items-center gap-2"><span class="live-dot"></span> LA ROBOTIQUE A PERDU LE CONTRÔLE</p>
                 <h1 id="hero-title" class="hero-title">MOINS DE BLABLA.<br><span class="gradient-text">PLUS DE BZZZT.</span><span class="title-star" aria-hidden="true">✹</span></h1>
                 <p class="mt-6 max-w-lg text-base leading-relaxed text-violet-200 md:text-lg">Des kits robotiques. Des idées douteuses. Un potentiel absolument démesuré. Bienvenue dans ton prochain grand délire.</p>
@@ -30,15 +30,16 @@
 
         <div class="ticker" aria-hidden="true"><div>DU CODE & DU CHAOS ✳ BRANCHE TON IMAGINATION ✳ ROBOTS À FORT POTENTIEL ✳ DU CODE & DU CHAOS ✳</div></div>
 
+        <div class="chaos-desk" aria-label="Les notes du labo"><div class="desk-note"><span>NOTE À MOI-MÊME / 004</span><p>Moins réfléchir.<br>Plus <em>fabriquer.</em></p><small>(mais garde les lunettes de protection)</small></div><div class="desk-stamp">TESTÉ SUR<br><strong>DES IDÉES</strong><br>PAS SUR DES CHATS</div><p class="desk-doodle" aria-hidden="true">✳ ↝ ⚡<span>le plan ? quel plan ?</span></p><div class="desk-warning"><span>⚠ ZONE DE BIDOUILLE</span><p>Les grandes inventions commencent<br>souvent par « oups ».</p></div></div>
         <section id="catalogue" class="scroll-mt-8 pt-14" aria-labelledby="catalogue-title">
             <div class="mb-8 flex flex-wrap items-end justify-between gap-4"><div><p class="eyebrow mb-3 text-lime-300">CHOISIS TON NIVEAU DE FOLIE</p><h2 id="catalogue-title" class="text-3xl font-black tracking-tight md:text-4xl">La sélection radioactive<span class="text-fuchsia-400">.</span></h2></div><span class="rounded-full border border-violet-800 px-4 py-2 text-xs text-violet-300">{{ produits|length }} expériences disponibles</span></div>
-            <div class="grid gap-6 md:grid-cols-3">
+            <div class="product-grid grid gap-6 md:grid-cols-3">
                 {% set themes = ['pink', 'lime', 'cyan'] %}
                 {% set labels = ['LE BOSS FINAL', 'LE BON COMPROMIS', 'LE PETIT CHAOS'] %}
                 {% set descriptions = ['Pour les cerveaux qui voient les choses en (beaucoup trop) grand.', 'Tout ce qu’il faut pour transformer un « et si… » en robot.', 'Petit budget, grandes étincelles. Il faut bien commencer quelque part.'] %}
                 {% for produit in produits %}
                     {% set variant = loop.index0 % 3 %}
-                    <article class="product-card theme-{{ themes[variant] }} flex flex-col">
+                    <article class="product-card theme-{{ themes[variant] }} flex flex-col" data-product-id="{{ produit.id }}" data-product-name="{{ produit.nom }}" data-product-price="{{ (produit.prix * 100)|round }}" data-product-stock="{{ produit.stock }}" data-product-theme="{{ themes[variant] }}"><span class="card-tape" aria-hidden="true"></span>
                         <div class="product-art relative flex items-center justify-center overflow-hidden"><span class="product-label">{{ labels[variant] }}</span><span class="product-number">0{{ loop.index }}</span><div class="mini-bot bot-{{ variant }}" aria-hidden="true"><div class="mini-antenna"></div><div class="mini-face"><span></span><span></span></div><div class="mini-body">{{ variant == 0 ? '✳' : (variant == 1 ? 'ϟ' : '♥') }}</div><div class="mini-legs"></div></div><span class="art-decoration" aria-hidden="true">{{ variant == 0 ? '✹' : (variant == 1 ? '↗' : '✦') }}</span><span class="product-art-caption">ASSEMBLE TON FUTUR.</span></div>
                         <div class="flex flex-1 flex-col p-6"><p class="mb-3 flex items-center gap-2 text-xs text-violet-300"><span class="stock-dot"></span>{{ produit.stock > 0 ? produit.stock ~ ' en stock · Prêt à décoller' : 'En rupture de stock' }}</p><h3 class="text-xl font-extrabold">{{ produit.nom }}</h3><p class="mb-6 mt-3 text-sm leading-relaxed text-violet-300">{{ descriptions[variant] }}</p><div class="mt-auto flex items-center justify-between gap-3"><p class="price">{{ produit.prix|number_format(2, ',', ' ') }}<span> €</span></p><span class="text-xs text-violet-400">TVA incluse</span></div><button type="button" class="add-button mt-5 flex w-full cursor-pointer items-center justify-between gap-2 rounded-xl px-4 py-4 font-bold disabled:cursor-not-allowed disabled:opacity-50" {{ produit.stock <= 0 ? 'disabled' : '' }}><span>{{ produit.stock > 0 ? 'Ajouter au panier' : 'Indisponible' }}</span><span aria-hidden="true">↗</span></button></div>
                     </article>
@@ -50,6 +51,17 @@
         <div class="lab-note mt-10 flex flex-wrap items-center justify-between gap-4 rounded-2xl p-6"><p class="font-bold"><span class="mr-3 text-lime-300" aria-hidden="true">⚡</span> Une seule règle au labo : essayer.</p><p class="text-sm text-violet-300">Le reste ? On improvisera.</p></div>
     </main>
     <footer class="relative z-10 mx-auto flex max-w-7xl flex-wrap justify-between gap-4 px-5 py-7 text-xs text-violet-400 md:px-10"><span>© {{ 'now'|date('Y') }} ShopFlow — Fabrique un truc bizarre.</span><span>CONÇU SUR TERRE. POUR L’INSTANT. ✳</span></footer>
+    <dialog id="cart-dialog" class="cart-dialog" aria-labelledby="cart-title">
+        <div class="cart-panel">
+            <header class="cart-header"><div><p class="eyebrow">INVENTAIRE DU CHAOS / <span data-cart-count>0</span></p><h2 id="cart-title">Ton petit <em>butin.</em></h2></div><button type="button" class="cart-close" data-cart-close aria-label="Fermer le panier">×</button></header>
+            <div class="cart-tape-note"><span aria-hidden="true">⚡</span> Objets à fort potentiel de bêtises.</div>
+            <div class="cart-items" data-cart-items></div>
+            <div class="cart-empty" data-cart-empty><div class="empty-bot" aria-hidden="true">[ ·_· ]</div><h3>Rien à signaler.<br>C’est suspect.</h3><p>Ton prochain « mais pourquoi pas ? »<br>se cache dans le catalogue.</p><button type="button" class="cart-primary" data-cart-close>Trouver mon premier cobaye ↗</button></div>
+            <footer class="cart-summary" data-cart-summary hidden><div class="cart-total"><span>Total du butin <small>TVA incluse</small></span><strong data-cart-total>0,00 €</strong></div><p class="checkout-note">Le labo prépare encore la prise de commande. Ton panier reste sauvegardé dans ce navigateur.</p><button type="button" class="cart-primary" data-cart-close>Continuer les expériences ↗</button><button type="button" class="cart-clear" data-cart-clear>Vider le labo, tout recommencer</button></footer>
+            <p class="cart-footnote">MANIPULER AVEC CURIOSITÉ. ✳</p>
+        </div>
+    </dialog>
+    <div class="cart-toast" role="status" aria-live="polite" data-cart-toast></div>
     <div id="flames" aria-hidden="true"></div>
 </body>
 </html>

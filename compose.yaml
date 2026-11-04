@@ -4,6 +4,7 @@ services:
       context: .
       dockerfile: Dockerfile
     working_dir: /app
+    command: ["php", "-S", "0.0.0.0:8000", "-t", "public", "bin/dev-router.php"]
     volumes:
       - .:/app
     ports:
@@ -14,6 +15,18 @@ services:
     depends_on:
       database:
         condition: service_healthy
+  node:
+    image: node:24-bookworm-slim
+    user: "${LOCAL_UID:-1000}:${LOCAL_GID:-1000}"
+    working_dir: /app
+    volumes:
+      - .:/app
+    environment:
+      # Reliable file watching with Docker bind mounts, including Docker Desktop.
+      WATCHPACK_POLLING: "true"
+      npm_config_cache: /tmp/npm-cache
+    command: sh -c "npm ci --no-audit --no-fund && npm run watch"
+
   ###> doctrine/doctrine-bundle ###
   database:
     image: postgres:${POSTGRES_VERSION:-16}-alpine

@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@source not "../../public";
 
 @theme { --font-sans: 'Arial', 'Helvetica Neue', sans-serif; }
 :root { color-scheme: dark; }

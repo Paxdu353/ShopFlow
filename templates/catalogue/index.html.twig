@@ -5,8 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="theme-color" content="#170b31">
     <title>ShopFlow — Le labo du chaos</title>
-    <link rel="stylesheet" href="{{ asset('styles/app.css') }}">
-    <script src="{{ asset('catalogue.js') }}" defer></script>
+    {{ encore_entry_link_tags('app') }}
+    {{ encore_entry_script_tags('app') }}
 </head>
 <body class="chaos-page min-h-screen text-white">
     <div class="ambient ambient-one" aria-hidden="true"></div>

@@ -15,6 +15,7 @@ services:
     depends_on:
       database:
         condition: service_healthy
+
   node:
     image: node:24-bookworm-slim
     user: "${LOCAL_UID:-1000}:${LOCAL_GID:-1000}"
@@ -26,6 +27,21 @@ services:
       WATCHPACK_POLLING: "true"
       npm_config_cache: /tmp/npm-cache
     command: sh -c "npm ci --no-audit --no-fund && npm run watch"
+
+  worker:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    working_dir: /app
+    volumes:
+      - .:/app
+    command: php bin/console messenger:consume async -vv
+    environment:
+      DATABASE_URL: "postgresql://${POSTGRES_USER:-app}:${POSTGRES_PASSWORD:-!ChangeMe!}@database:5432/${POSTGRES_DB:-app}?serverVersion=${POSTGRES_VERSION:-16}&charset=utf8"
+      MAILER_DSN: "smtp://mailer:1025"
+    depends_on:
+      database:
+        condition: service_healthy
 
   ###> doctrine/doctrine-bundle ###
   database:
@@ -50,8 +66,6 @@ services:
       start_period: 60s
     volumes:
       - database_data:/var/lib/postgresql/data:rw
-      # You may use a bind-mounted host directory instead, so that it is harder to accidentally remove the volume and lose all your data!
-      # - ./docker/db/data:/var/lib/postgresql/data:rw
 ###< doctrine/doctrine-bundle ###
 
 volumes:

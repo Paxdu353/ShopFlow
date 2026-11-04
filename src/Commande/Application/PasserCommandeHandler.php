@@ -7,7 +7,6 @@ use App\Commande\Application\Port\PaiementGateway;
 use App\Commande\Domain\CommandeId;
 use App\Commande\Domain\Exception\PanierVideException;
 use App\Commande\Domain\Event\CommandePassee;
-use CommandePassee as GlobalCommandePassee;
 use Symfony\Component\Messenger\MessageBusInterface;
 
 final class PasserCommandeHandler
@@ -53,7 +52,7 @@ final class PasserCommandeHandler
 
         // 6. Publier l'événement métier
         $this->bus->dispatch(
-            new GlobalCommandePassee(
+            new CommandePassee(
                 $commande->getId()->getId(),
                 $lignes,
                 new \DateTimeImmutable()
